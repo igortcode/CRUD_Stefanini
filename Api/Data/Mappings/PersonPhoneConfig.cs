@@ -17,6 +17,11 @@ namespace Data.Mappings
             builder.HasOne(pp => pp.Person)
                 .WithMany(p => p.Phones)
                 .HasForeignKey(pp => pp.PersonId);
+
+            builder.HasOne(pp => pp.PhoneNumberType)
+                .WithOne(p => p.PersonPhone)
+                .HasForeignKey<PhoneNumberType>(pt => pt.PersonPhoneId);
+                
             
             builder.ToTable("PersonPhone");
         }

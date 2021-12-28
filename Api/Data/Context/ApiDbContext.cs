@@ -10,6 +10,7 @@ namespace Data.Context
         public DbSet<PersonPhone> PeoplePhones { get; set; }
         public DbSet<PhoneNumberType> PhoneNumberTypes { get; set; }
 
+        public ApiDbContext(){}
         public ApiDbContext(DbContextOptions options) : base(options){}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

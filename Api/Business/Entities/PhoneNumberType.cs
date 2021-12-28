@@ -7,6 +7,6 @@ namespace Business.Entities
     {
         public string Name { get; set; }
         public Guid PersonPhoneId { get; set; }
-        public List<PersonPhone> PersonPhones { get; set; }
+        public PersonPhone PersonPhone { get; set; }
     }
 }

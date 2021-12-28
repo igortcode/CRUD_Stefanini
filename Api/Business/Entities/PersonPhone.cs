@@ -14,8 +14,6 @@ namespace Business.Entities
 
         public Person Person { get; set; }
 
-        public Guid PhoneNumberTypeID { get; set; }
-
         public PhoneNumberType PhoneNumberType { get; set; }
     }
 }

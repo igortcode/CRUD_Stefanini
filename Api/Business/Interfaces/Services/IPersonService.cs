@@ -10,6 +10,8 @@ namespace Business.Interfaces.Services
         Task<Person> Novo(Person person);
         Task<Person> Atualizar(Person person);
         Task<Person> BuscarPorId(Guid id);
+        Task<Person> ObterComRelacionamentos(Guid id);
+        Task<List<Person>> ObterTodosComRelacionamentos();
         Task<List<Person>> Listar();
         Task Excluir(Guid id);
     }

@@ -1,4 +1,5 @@
-﻿using Application.ViewModel;
+﻿using Application.Interface;
+using Application.ViewModel;
 using Business.Entities;
 using Business.Interfaces.Services;
 using System;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Application.Facade
 {
-    public class PhoneNumberTypeFacade
+    public class PhoneNumberTypeFacade : IPhoneNumberTypeFacade
     {
         private readonly IPhoneNumberTypeService _phoneNumberTypeService;
         public PhoneNumberTypeFacade(IPhoneNumberTypeService phoneNumberTypeService)

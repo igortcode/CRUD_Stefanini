@@ -1,3 +1,4 @@
+using Api.Configuration.DependencyInjectionConfig;
 using Data.Context;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,6 +37,7 @@ namespace Api
             });
             
             services.AddDbContext<ApiDbContext>(op => op.UseSqlServer(Configuration.GetConnectionString("Connection")));
+            services.ResolveDependencies();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

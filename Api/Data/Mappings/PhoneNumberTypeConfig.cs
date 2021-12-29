@@ -14,7 +14,7 @@ namespace Data.Mappings
                 .HasMaxLength(100)
                 .IsRequired();
             
-            builder.HasMany(p => p.PersonPhone)
+            //builder.HasMany(p => p.PersonPhone)
 
             builder.ToTable("PhoneNumberType");
 

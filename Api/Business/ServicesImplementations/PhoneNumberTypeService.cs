@@ -3,8 +3,6 @@ using Business.Interfaces.Repository;
 using Business.Interfaces.Services;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Business.ServicesImplementations
@@ -18,19 +16,24 @@ namespace Business.ServicesImplementations
             _phoneNumberTypeRepository = phoneNumberTypeRepository;
         }
         
-        public Task<PhoneNumberType> Atualizar(PhoneNumberType phoneNumberType)
+        public async Task Atualizar(PhoneNumberType phoneNumberType)
         {
-            throw new NotImplementedException();
+            await _phoneNumberTypeRepository.Atualizar(phoneNumberType);
         }
 
-        public Task Excluir(PhoneNumberType phoneNumberType)
+        public async Task<PhoneNumberType> BuscarPorId(Guid id)
         {
-            throw new NotImplementedException();
+            return await _phoneNumberTypeRepository.ObterPorId(id);
         }
 
-        public Task<List<PhoneNumberType>> Listar(PhoneNumberType phoneNumberType)
+        public async Task Excluir(PhoneNumberType phoneNumberType)
         {
-            throw new NotImplementedException();
+            await _phoneNumberTypeRepository.Remover(phoneNumberType.Id);
+        }
+
+        public async Task<List<PhoneNumberType>> Listar()
+        {
+            return await _phoneNumberTypeRepository.ObterTodos();
         }
 
         public async Task<PhoneNumberType> Novo(PhoneNumberType phoneNumberType)

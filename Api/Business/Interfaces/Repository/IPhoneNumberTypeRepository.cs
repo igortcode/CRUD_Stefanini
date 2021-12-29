@@ -1,6 +1,6 @@
-﻿namespace Business.Interfaces.Repository
+﻿using Business.Entities;
+
+namespace Business.Interfaces.Repository
 {
-    public interface IPhoneNumberTypeRepository
-    {
-    }
+    public interface IPhoneNumberTypeRepository : IRepository<PhoneNumberType> {}
 }

@@ -12,13 +12,13 @@ namespace Data.Repository
 {
     public abstract class GenericRepository<TEntity> : IRepository<TEntity> where TEntity : Entity, new()
     {
-        protected readonly ApiDbContext _context;
+        protected readonly ApiDbContext Context;
         protected readonly DbSet<TEntity> _dbSet;
 
-        public GenericRepository()
+        public GenericRepository(ApiDbContext context)
         {
-            _context = new ApiDbContext();
-            _dbSet = _context.Set<TEntity>();
+            Context = context;
+            _dbSet = Context.Set<TEntity>();
         }
         
         public async Task<TEntity> Adicionar(TEntity entity)
@@ -30,7 +30,7 @@ namespace Data.Repository
 
         public async Task<TEntity> Atualizar(TEntity entity)
         {
-            _context.Entry(entity).State = EntityState.Modified;
+            Context.Entry(entity).State = EntityState.Modified;
             await SaveChanges();
             
             return await _dbSet.FindAsync(entity.Id);
@@ -43,7 +43,7 @@ namespace Data.Repository
 
         public void Dispose()
         {
-            _context?.Dispose();
+            Context?.Dispose();
         }
 
         public async Task<TEntity> ObterPorId(Guid id)
@@ -58,13 +58,13 @@ namespace Data.Repository
 
         public async Task Remover(Guid id)
         {
-            _context.Entry(new TEntity { Id = id }).State = EntityState.Deleted;
+            Context.Entry(new TEntity { Id = id }).State = EntityState.Deleted;
             await SaveChanges();
         }
 
         public async Task<int> SaveChanges()
         {
-            return await _context.SaveChangesAsync();
+            return await Context.SaveChangesAsync();
         }
     }
 }

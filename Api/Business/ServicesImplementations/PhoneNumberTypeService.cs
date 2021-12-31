@@ -26,6 +26,11 @@ namespace Business.ServicesImplementations
             return await _phoneNumberTypeRepository.ObterPorId(id);
         }
 
+        public async Task<PhoneNumberType> BuscarPorNome(string nome)
+        {
+            return await _phoneNumberTypeRepository.BuscarPorNome(nome);
+        }
+
         public async Task Excluir(PhoneNumberType phoneNumberType)
         {
             await _phoneNumberTypeRepository.Remover(phoneNumberType.Id);

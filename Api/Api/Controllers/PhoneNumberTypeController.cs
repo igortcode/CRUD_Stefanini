@@ -22,36 +22,66 @@ namespace Api.Controllers
         }
         
         // GET: api/<PhoneNumberTypeController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        [HttpGet("tipo/listar")]
+        public async Task<IActionResult> ListarTipos()
         {
-            return new string[] { "value1", "value2" };
+            return Ok(await _phoneNumberTypeFacade.ListarTipos());
         }
 
         // GET api/<PhoneNumberTypeController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpPost("tipo/buscar")]
+        public async Task<IActionResult> BuscarTipo([FromBody] PesquisaTipoContatoViewModel type)
         {
-            return "value";
+           var result = await _phoneNumberTypeFacade.BuscarPorIdTipos(type);
+            if (result != null)
+                return Ok(result);
+            else
+                return NotFound("Registro não encontrado");
+        }
+
+        [HttpPost("tipo/buscar/nome")]
+        public async Task<IActionResult> BuscarTipoNome([FromBody] TipoContatoViewModel type)
+        {
+            var result = await _phoneNumberTypeFacade.BuscarPorNome(type);
+            if (result != null)
+                return Ok(result);
+            else
+                return NotFound("Registro não encontrado");
         }
 
         // POST api/<PhoneNumberTypeController>
-        [HttpPost("novo")]
-        public async Task<TipoContatoViewModel> CriarTipo([FromBody] TipoContatoViewModel type)
+        [HttpPost("tipo/novo")]
+        public async Task<IActionResult> Cadastrar([FromBody] CadastroTipoContatoViewModel type)
         {
-            return await _phoneNumberTypeFacade.CadastrarNovoTipo(type);
+            var result = await _phoneNumberTypeFacade.CadastrarNovoTipo(type);
+            if (result != null)
+                return Ok(result);
+            else
+                return BadRequest("Não foi possivel cadastrar!");
         }
 
-        // PUT api/<PhoneNumberTypeController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPost("tipo/atualizar")]
+        public async Task<IActionResult> Atualizar([FromBody] AtualizarTipoContatoViewModel type)
         {
+            var result = await _phoneNumberTypeFacade.AtualizarTipo(type);
+            if (result != null)
+                return Ok(result);
+            else
+                return BadRequest("Não foi possivel atualizar!");
         }
 
         // DELETE api/<PhoneNumberTypeController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpPost("tipo/excluir")]
+        public async Task<IActionResult> Excluir([FromBody] PesquisaTipoContatoViewModel type)
         {
+            if(await _phoneNumberTypeFacade.RemoverTipo(type))
+            {
+                return Ok("Cadastro excluido com sucesso!");
+            }
+            else
+            {
+               return NotFound("Não foi possível excluir!");
+            }
         }
     }
 }

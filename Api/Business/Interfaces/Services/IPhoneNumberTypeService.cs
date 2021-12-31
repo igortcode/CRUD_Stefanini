@@ -9,6 +9,7 @@ namespace Business.Interfaces.Services
     {
         Task<PhoneNumberType> Novo(PhoneNumberType phoneNumberType);
         Task<PhoneNumberType> BuscarPorId(Guid id);
+        Task<PhoneNumberType> BuscarPorNome(string nome);
         Task Atualizar(PhoneNumberType phoneNumberType);
         Task<List<PhoneNumberType>> Listar();
         Task Excluir(PhoneNumberType phoneNumberType);

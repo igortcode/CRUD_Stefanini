@@ -30,7 +30,8 @@ namespace Data.Repository
 
         public async Task<TEntity> Atualizar(TEntity entity)
         {
-            Context.Entry(entity).State = EntityState.Modified;
+            Context.Update(entity);
+          
             await SaveChanges();
             
             return await _dbSet.FindAsync(entity.Id);
@@ -48,17 +49,19 @@ namespace Data.Repository
 
         public async Task<TEntity> ObterPorId(Guid id)
         {
-            return await _dbSet.FindAsync(id);
+            return await _dbSet.AsNoTracking().Where(f => f.Id == id).FirstOrDefaultAsync();
         }
 
         public async Task<List<TEntity>> ObterTodos()
         {
-            return await _dbSet.ToListAsync();
+            return await _dbSet.AsNoTracking().ToListAsync();
         }
 
         public async Task Remover(Guid id)
         {
-            Context.Entry(new TEntity { Id = id }).State = EntityState.Deleted;
+            //Context.Entry(new TEntity { Id = id }).State = EntityState.Deleted;
+            var entity =  await _dbSet.FindAsync(id);
+            _dbSet.Remove(entity);
             await SaveChanges();
         }
 

@@ -19,14 +19,13 @@ namespace Business.ServicesImplementations
         public async Task<Person> Novo(Person person)
         {
             await _personRepository.Adicionar(person);
-            await _personPhoneRepository.AdicionarVarios(person.Phones);
             return  await _personRepository.ObterComNumerosDeTelefone(person.Id); 
         }
 
         public async Task<Person> Atualizar(Person person)
         {
-            await _personRepository.Atualizar(person);
             await _personPhoneRepository.AtualizarVarios(person.Id, person.Phones);
+            await _personRepository.Atualizar(person);
             return await _personRepository.ObterComNumerosDeTelefone(person.Id);
         }
 
@@ -38,6 +37,11 @@ namespace Business.ServicesImplementations
         public async Task<Person> ObterComRelacionamentos(Guid id)
         {
             return await _personRepository.ObterComNumerosDeTelefone(id);
+        }
+
+        public async Task<List<Person>> ObterComRelacionamentosNome(string nome)
+        {
+            return await _personRepository.ObterComNumerosDeTelefoneNome(nome);
         }
 
         public async Task Excluir(Guid id)

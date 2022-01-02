@@ -2,9 +2,12 @@
 using Application.ViewModel;
 using AutoMapper;
 using Business.Entities;
+using Business.Exceptions;
+using Business.Interfaces.Repository;
 using Business.Interfaces.Services;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Application.Facade
@@ -12,10 +15,12 @@ namespace Application.Facade
     public class PhoneNumberTypeFacade : IPhoneNumberTypeFacade
     {
         private readonly IPhoneNumberTypeService _phoneNumberTypeService;
+        private readonly IPersonPhoneRepository _personPhoneRepository;
         private readonly IMapper _mapper;
-        public PhoneNumberTypeFacade(IPhoneNumberTypeService phoneNumberTypeService, IMapper mapper)
+        public PhoneNumberTypeFacade(IPhoneNumberTypeService phoneNumberTypeService, IMapper mapper, IPersonPhoneRepository personPhoneRepository)
         {
             _phoneNumberTypeService = phoneNumberTypeService;
+            _personPhoneRepository = personPhoneRepository;
             _mapper = mapper;
         }
 
@@ -38,7 +43,7 @@ namespace Application.Facade
             catch (Exception ex)
             {
                 //Criar log
-                return null;
+                throw new EntityException("Não foi possível executar este método! " + ex);
             }
 
             if (tipoContatoCadastrado != null)
@@ -89,7 +94,7 @@ namespace Application.Facade
             {
                 //criar log
                 //criar exceptions
-                return null;
+                throw new EntityException("Não foi possível executar este método! " + ex);
             }
         }
 
@@ -109,7 +114,7 @@ namespace Application.Facade
             }
             catch(Exception ex)
             {
-                return false;
+                throw new EntityException("Não foi possível executar este método! " + ex);
             }
         }
 
@@ -132,7 +137,7 @@ namespace Application.Facade
                 {
                     //criar log
                     //criar exceptions
-                    return null;
+                    throw new EntityException("Não foi possível executar este método! " + ex);
                 }
 
             }
@@ -156,7 +161,7 @@ namespace Application.Facade
             {
                 //criar log
                 //criar exceptions
-                return null;
+                throw new EntityException("Não foi possível executar este método! " + ex);
             }
         }
 
@@ -173,7 +178,7 @@ namespace Application.Facade
             {
                 //criar log
                 //criar exceptions
-                return null;
+                throw new EntityException("Não foi possível executar este método! " + ex);
             }
         }
 
@@ -185,10 +190,19 @@ namespace Application.Facade
                 try
                 {
                     var type = await _phoneNumberTypeService.BuscarPorId(id);
+                    var personPhones = (await _personPhoneRepository.ObterTodos()).Where(pp => pp.PhoneNumberTypeId == type.Id).ToList(); 
+
                     if (type != null)
                     {
-                        await _phoneNumberTypeService.Excluir(type);
-                        return true;
+                        if(personPhones.Count > 0) {
+                            throw new EntityException("Não foi possível excluir, existe contatos de pessoas que utilizam este tipo!");
+                        }
+                        else
+                        {
+                            await _phoneNumberTypeService.Excluir(type);
+                            return true;
+                        }
+                        
                     }
                     else
                         return false;
@@ -197,7 +211,7 @@ namespace Application.Facade
                 {
                     //criar log
                     //criar exceptions
-                    return false;
+                    throw new EntityException("Não foi possível executar este método! " + ex);
                 }
 
             }

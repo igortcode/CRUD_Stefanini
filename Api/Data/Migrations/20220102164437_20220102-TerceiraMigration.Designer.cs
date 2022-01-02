@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    [Migration("20211231113818_20211231_SecondMigration")]
-    partial class _20211231_SecondMigration
+    [Migration("20220102164437_20220102-TerceiraMigration")]
+    partial class _20220102TerceiraMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -51,7 +51,7 @@ namespace Data.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.Property<Guid?>("PhoneNumberTypeId")
+                    b.Property<Guid>("PhoneNumberTypeId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -89,7 +89,9 @@ namespace Data.Migrations
 
                     b.HasOne("Business.Entities.PhoneNumberType", "PhoneNumberType")
                         .WithMany()
-                        .HasForeignKey("PhoneNumberTypeId");
+                        .HasForeignKey("PhoneNumberTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Person");
 

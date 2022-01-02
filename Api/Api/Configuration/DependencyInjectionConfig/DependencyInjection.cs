@@ -18,6 +18,7 @@ namespace Api.Configuration.DependencyInjectionConfig
             services.AddScoped<IPersonService, PersonService>();
             services.AddScoped<IPhoneNumberTypeService, PhoneNumberTypeService>();
             services.AddScoped<IPhoneNumberTypeFacade, PhoneNumberTypeFacade>();
+            services.AddScoped<IPersonFacade, PersonFacade>();
 
             return services;
         }

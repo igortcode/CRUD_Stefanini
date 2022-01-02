@@ -49,7 +49,7 @@ namespace Data.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.Property<Guid?>("PhoneNumberTypeId")
+                    b.Property<Guid>("PhoneNumberTypeId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -87,7 +87,9 @@ namespace Data.Migrations
 
                     b.HasOne("Business.Entities.PhoneNumberType", "PhoneNumberType")
                         .WithMany()
-                        .HasForeignKey("PhoneNumberTypeId");
+                        .HasForeignKey("PhoneNumberTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Person");
 

@@ -30,9 +30,10 @@ namespace Data.Repository
 
         public async Task<TEntity> Atualizar(TEntity entity)
         {
-            Context.Update(entity);
+            Context.Entry(entity).State = EntityState.Modified;
+            await Context.SaveChangesAsync();
           
-            await SaveChanges();
+            //await SaveChanges();
             
             return await _dbSet.FindAsync(entity.Id);
         }

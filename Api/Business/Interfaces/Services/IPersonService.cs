@@ -12,6 +12,7 @@ namespace Business.Interfaces.Services
         Task<Person> BuscarPorId(Guid id);
         Task<Person> ObterComRelacionamentos(Guid id);
         Task<List<Person>> ObterTodosComRelacionamentos();
+        Task<List<Person>> ObterComRelacionamentosNome(string nome);
         Task<List<Person>> Listar();
         Task Excluir(Guid id);
     }

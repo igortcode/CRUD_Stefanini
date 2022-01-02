@@ -9,5 +9,6 @@ namespace Business.Interfaces.Repository
     {
         Task<Person> ObterComNumerosDeTelefone(Guid id);
         Task<List<Person>> ObterTodosComNumerosDeTelefone();
+        Task<List<Person>> ObterComNumerosDeTelefoneNome(string nome);
     }
 }

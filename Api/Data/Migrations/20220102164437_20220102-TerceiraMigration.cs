@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Data.Migrations
 {
-    public partial class _20121228PrimeiraMigration : Migration
+    public partial class _20220102TerceiraMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -20,12 +20,25 @@ namespace Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PhoneNumberType",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PhoneNumberType", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PersonPhone",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    PersonId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    PersonId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PhoneNumberTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -36,23 +49,10 @@ namespace Data.Migrations
                         principalTable: "Person",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PhoneNumberType",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    PersonPhoneId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PhoneNumberType", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PhoneNumberType_PersonPhone_PersonPhoneId",
-                        column: x => x.PersonPhoneId,
-                        principalTable: "PersonPhone",
+                        name: "FK_PersonPhone_PhoneNumberType_PhoneNumberTypeId",
+                        column: x => x.PhoneNumberTypeId,
+                        principalTable: "PhoneNumberType",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -63,22 +63,21 @@ namespace Data.Migrations
                 column: "PersonId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PhoneNumberType_PersonPhoneId",
-                table: "PhoneNumberType",
-                column: "PersonPhoneId",
-                unique: true);
+                name: "IX_PersonPhone_PhoneNumberTypeId",
+                table: "PersonPhone",
+                column: "PhoneNumberTypeId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "PhoneNumberType");
-
-            migrationBuilder.DropTable(
                 name: "PersonPhone");
 
             migrationBuilder.DropTable(
                 name: "Person");
+
+            migrationBuilder.DropTable(
+                name: "PhoneNumberType");
         }
     }
 }
